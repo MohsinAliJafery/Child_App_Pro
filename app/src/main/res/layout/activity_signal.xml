@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignalActivity">
+
+    <androidx.appcompat.widget.Toolbar
+    android:id="@+id/navigation_search_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_alignParentTop="true"
+    android:layout_margin="5dp"
+    android:background="@drawable/curved_toolbar"
+    android:elevation="4dp"
+    app:title="SOS Signal"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+    <Button
+        android:layout_width="500px"
+        android:layout_height="500px"
+        android:text="SOS"
+        android:id="@+id/sos_button"
+        android:textSize="30dp"
+        android:textColor="@color/noColor"
+        android:background="@drawable/sos_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/navigation_search_toolbar" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

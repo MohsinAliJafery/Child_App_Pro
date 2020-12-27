@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/nav_realtime_interaction"
+            android:title="Get in Touch"
+            android:icon="@drawable/ic_call_to_action_black_24dp"/>
+
+        <item android:id="@+id/nav_location"
+            android:title="Geo Fencing"
+            android:icon="@drawable/ic_add_location_black_24dp"/>
+
+        <item android:id="@+id/nav_signal"
+            android:title="Signal"
+            android:icon="@drawable/ic_surround_sound_black_24dp"/>
+
+        <item android:id="@+id/nav_keywordSms"
+            android:title="Keyword Sms"
+            android:icon="@drawable/ic_vpn_key_black_24dp"/>
+
+        <item android:id="@+id/nav_history"
+            android:title="Location History"
+            android:icon="@drawable/ic_baseline_history_24"/>
+
+<!--        <item android:id="@+id/nav_application_statistics"-->
+<!--            android:title="Application Statistics"-->
+<!--            android:icon="@drawable/ic_show_chart_black_24dp"/>-->
+
+<!--        <item android:id="@+id/nav_tasks"-->
+<!--            android:title="Tasks"-->
+<!--            android:icon="@drawable/ic_assignment_black_24dp"/>-->
+
+        <item android:id="@+id/nav_settings"
+            android:title="Settings"
+            android:icon="@drawable/ic_settings_black_24dp"/>
+
+
+    </group>
+
+
+    <item android:title="Community">
+        <menu>
+            <item android:id="@+id/nav_add_parent_or_kids"
+                android:title="Add Parent or Kid"
+                android:icon="@drawable/ic_person_add_black_24dp"/>
+        </menu>
+
+            <item android:id="@+id/nav_contact_support"
+                android:title="Contact Support"
+                android:icon="@drawable/ic_help_outline_black_24dp"/>
+
+
+            <item android:id="@+id/nav_my_account"
+                android:title="My Account"
+                android:icon="@drawable/ic_person_outline_black_24dp"/>
+
+             <item android:id="@+id/nav_faq"
+            android:title="Frequenctly Asked Questions"
+            android:icon="@drawable/ic_question_answer_black_24dp"/>
+
+             <item android:id="@+id/nav_about_us"
+            android:title="About The App"
+            android:icon="@drawable/ic_event_note_black_24dp"/>
+
+    </item>
+
+
+</menu>

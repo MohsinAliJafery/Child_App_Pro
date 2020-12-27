@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    <item-->
+<!--        android:bottom="0dp"-->
+<!--        android:drawable="@android:drawable/dialog_holo_light_frame"-->
+<!--        android:left="0dp"-->
+<!--        android:right="0dp"-->
+<!--        android:top="0dp">-->
+
+<!--        <shape android:shape="rectangle">-->
+<!--            <solid android:color="@android:color/white" />-->
+<!--            <corners android:radius="10dp"/>-->
+<!--        </shape>-->
+
+<!--    </item>-->
+
+<!--    <item-->
+<!--        android:bottom="0dp"-->
+<!--        android:left="0dp"-->
+<!--        android:right="0dp"-->
+<!--        android:top="0dp">-->
+<!--        &lt;!&ndash;whatever you want in the background, here i preferred solid white &ndash;&gt;-->
+<!--        <shape android:shape="rectangle">-->
+<!--            <solid android:color="@android:color/white" />-->
+<!--            <corners android:radius="10dp"/>-->
+<!--        </shape>-->
+<!--    </item>-->
+    <item>
+        <shape>
+            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <solid android:color="#02000000" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <solid android:color="#05000000" />
+            <corners android:radius="7dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <solid android:color="#10000000" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <solid android:color="#15000000" />
+            <corners android:radius="5dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <solid android:color="#20000000" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <solid android:color="#25000000" />
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <solid android:color="#30000000" />
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+
+    <!-- Background -->
+    <item>
+        <shape>
+            <solid android:color="#fff" />
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+
+</layer-list>
