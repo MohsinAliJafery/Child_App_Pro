@@ -63,7 +63,7 @@ public class SosAlarmService extends Service {
         PendingIntent mPendingIntent = PendingIntent.getActivity(this, 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(getApplicationContext())
-                        .setSmallIcon(R.drawable.ic_send_plane)
+                        .setSmallIcon(R.drawable.ic_baseline_help_24)
                         .setContentTitle(title)
                         .setContentText(message)
                         .setContentIntent(mPendingIntent);

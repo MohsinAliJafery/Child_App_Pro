@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".HistoryDirectory"></activity>
+        <activity android:name=".InformYourParents"></activity>
+        <activity android:name=".HistoryDirectory" />
         <activity android:name=".MapViewOfHistory" />
         <activity android:name=".KeywordActivity" />
         <activity android:name=".HistoryActivity" />
@@ -41,6 +42,11 @@
         <service
             android:name=".SosAlarmService"
             android:exported="true" />
+        <service
+            android:name=".ServiceToCheckTheChildsLocation"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity android:name=".CreateLocation" />
         <activity android:name=".MessageActivityForChild" />

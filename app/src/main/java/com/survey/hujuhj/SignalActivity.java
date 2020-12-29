@@ -54,41 +54,42 @@ public class SignalActivity extends AppCompatActivity {
 
         if(mParent){
             mDBReferenceForToken = FirebaseDatabase.getInstance().getReference().child("Tokens").child(mParentId).child("token");
+            mDBReferenceForToken.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    userToken=dataSnapshot.getValue(String.class);
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            SOS.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    sendNotificationsOverFirebase(SignalActivity.this, userToken,"SOS", "Get in touch with your kid immediately");
+
+
+
+                }
+            });
         }else{
 
-            mDBReferenceForToken = FirebaseDatabase.getInstance().getReference().child("Tokens").child(mChildID).child("token");
+
+//            mDBReferenceForToken = FirebaseDatabase.getInstance().getReference().child("Tokens").child(mChildID).child("token");
         }
 
-        mDBReferenceForToken.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userToken=dataSnapshot.getValue(String.class);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        SOS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                sendNotificationsOverFirebase(SignalActivity.this, userToken,"SOS", "Get in touch with your kid immediately");
-
-
-
-            }
-        });
 
 
     }
 
     public void sendNotificationsOverFirebase(Context mContext, String usertoken, String title, String message) {
-        Data data = new Data(title, message);
+        Data data = new Data(title, message, title);
         NotificationSender sender = new NotificationSender(data, usertoken);
         apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>() {
             @Override

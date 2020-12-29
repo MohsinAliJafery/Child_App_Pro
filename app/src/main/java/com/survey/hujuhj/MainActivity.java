@@ -1,6 +1,9 @@
 package com.survey.hujuhj;
 
 import android.Manifest;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +23,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,20 +52,23 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         mNavigationDrawer = findViewById(R.id.drawer_layout);
-
+//
 //        Intent intent = getIntent();
-//        String mFrom = intent.getStringExtra("mFrom");
-//        Intent mServiceintent = new Intent(this, SosAlarmService.class);
 //
-//        if(mFrom.equals("SOS")){
-//            stopService(mServiceintent  );
+//            String mFrom = intent.getExtras().getString("mFrom");
+//            Intent mServiceintent = new Intent(this, SosAlarmService.class);
 //
-//        }
-
+//            if ("SOS".equals(mFrom)) {
+//                stopService(mServiceintent);
+//
+//            }
+        Intent mServiceintent = new Intent(this, SosAlarmService.class);
+        stopService(mServiceintent);
         BottomNavigationView mBottomNavigation = findViewById(R.id.bottom_navigation);
         mBottomNavigation.setOnNavigationItemSelectedListener(mBottomNavigationListener);
         mBottomNavigation.setSelectedItemId(R.id.location);
 
+        CheckForChildsLocation();
 
         LayoutInflater layoutInflater
                 = (LayoutInflater) getBaseContext()
@@ -110,7 +117,23 @@ public class MainActivity extends AppCompatActivity{
 
                     }
                 };
+    public void CheckForChildsLocation(){
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
 
+        ComponentName mComponent = new ComponentName(this, ServiceToCheckTheChildsLocation.class);
+
+        JobInfo jobInfo = new JobInfo.Builder(101, mComponent)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setPeriodic(5000)
+                .build();
+
+        int result = jobScheduler.schedule(jobInfo);
+        if(result == JobScheduler.RESULT_SUCCESS){
+            Log.d("myTag", "CheckForChildsLocation: Success");
+        }else{
+            Log.d("myTag", "CheckForChildsLocation: Failure");
+        }
+    }
     @Override
     public void onBackPressed() {
 

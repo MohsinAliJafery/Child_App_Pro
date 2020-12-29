@@ -45,7 +45,7 @@ public class Login_or_Register extends AppCompatActivity {
                         startActivity(mIntent);
                         finish();
                     }else{
-                        Intent mIntent = new Intent(Login_or_Register.this, ConnectKidsPhone.class);
+                        Intent mIntent = new Intent(Login_or_Register.this, MainActivity.class);
                         startActivity(mIntent);
                         finish();
                     }

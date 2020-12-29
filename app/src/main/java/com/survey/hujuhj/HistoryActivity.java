@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +38,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     HistoryAdapter adapter;
     List<String> myList;
     Map<String, String> SpecifiedDates;
+
+    FirebaseUser mUser;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +51,21 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
         SpecifiedDates = new HashMap<String, String>();
 
-        mDBReference = FirebaseDatabase.getInstance().getReference("History");
+        SharedPreferences mSharedpreferences = getSharedPreferences("ChildApp", Context.MODE_PRIVATE);
+        boolean parent = mSharedpreferences.getBoolean("areYouParent", false);
+        String mParentId = mSharedpreferences.getString("parent", null);
+        String mChildId = mSharedpreferences.getString("childId", null);
+
+
+        if(parent){
+            mDBReference = FirebaseDatabase.getInstance().getReference("History").child(mParentId);
+
+        }else{
+            mUser = FirebaseAuth.getInstance().getCurrentUser();
+            String UserId = mUser.getUid();
+            mDBReference = FirebaseDatabase.getInstance().getReference("History").child(UserId);
+        }
+
 
         mDBReference.addValueEventListener(new ValueEventListener() {
             @Override

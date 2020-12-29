@@ -4,6 +4,9 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,6 +85,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.survey.hujuhj.SendNotificationPack.Token;
+import com.survey.hujuhj.ServiceToCheckTheChildsLocation;
 import com.survey.hujuhj.SignalActivity;
 
 import java.io.IOException;
@@ -92,6 +96,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Context.JOB_SCHEDULER_SERVICE;
 import static android.content.Context.LOCATION_SERVICE;
 
 public class LocationFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
@@ -157,7 +162,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
 //                        Log.d(TAG, "onDataChange: "+ dayOfTheWeek);
 
 
-
+        SharedPreferences mSharedpreferences = getActivity().getSharedPreferences("ChildApp", Context.MODE_PRIVATE);
+        boolean parent = sharedpreferences.getBoolean("areYouParent", false);
+        String mParentId = sharedpreferences.getString("parent", null);
+        String mChildId = sharedpreferences.getString("childId", null);
 
 
         mLocationCallback = new LocationCallback() {
@@ -175,31 +183,28 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
                 showMarker(location.getLatitude(), location.getLongitude());
 
 
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("History");
-                currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-                String mPushKey = mDatabase.child(currentDate).push().getKey();
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("History").child(mParentId);
+                    currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-                HashMap<String, Double> hashMap = new HashMap<>();
-                hashMap.put("lat", location.getLatitude());
-                hashMap.put("lng", location.getLongitude());
+                    String mPushKey = mDatabase.child(currentDate).push().getKey();
 
-                mDatabase.child(currentDate).child(mPushKey).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d(TAG, "onComplete: History has been updated!");
-                    }
-                });
+                    HashMap<String, Double> hashMap = new HashMap<>();
+                    hashMap.put("lat", location.getLatitude());
+                    hashMap.put("lng", location.getLongitude());
 
-                Log.d("locationsChild", location.getLatitude() + "\n" + location.getLongitude());
+                    mDatabase.child(currentDate).child(mPushKey).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.d(TAG, "onComplete: History has been updated!");
+                        }
+                    });
 
-            }
+                    Log.d("locationsChild", location.getLatitude() + "\n" + location.getLongitude());
+
+                }
+
         };
-
-        SharedPreferences mSharedpreferences = getActivity().getSharedPreferences("ChildApp", Context.MODE_PRIVATE);
-        boolean parent = sharedpreferences.getBoolean("areYouParent", false);
-        String mParentId = sharedpreferences.getString("parent", null);
-
 
         if (parent) {
             DBaseReference = FirebaseDatabase.getInstance().getReference("GeoFences").child(mParentId);
@@ -251,6 +256,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
         SupportMapFrag.setRetainInstance(true);
         SupportMapFrag.getMapAsync((OnMapReadyCallback) this);
 
+
+
         ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(getActivity(), mNavigationDrawer, mToolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
@@ -263,6 +270,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
         mNavigationView.setNavigationItemSelectedListener(this);
         return view;
     }
+
+
+
 
     private void addGeofence(String ID, LatLng latLng, float radius, String mName) {
 

@@ -1,12 +1,16 @@
 package com.survey.hujuhj.SendNotificationPack;
 
+import android.location.LocationListener;
+
 public class Data {
     private String Title;
     private String Message;
+    private String Location;
 
-    public Data(String title, String message) {
+    public Data(String title, String message, String location) {
         Title = title;
         Message = message;
+        Location = location;
     }
 
     public Data() {
@@ -28,4 +32,11 @@ public class Data {
         Message = message;
     }
 
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
 }

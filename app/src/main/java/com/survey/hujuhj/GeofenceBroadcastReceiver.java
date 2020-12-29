@@ -141,28 +141,41 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 //                        String dayOfTheWeek = sdf.format(d);
 //
 //                        Log.d(TAG, "onDataChange: "+ dayOfTheWeek);
+
+                        String trigger;
+
                         switch (transitionType) {
                             case Geofence.GEOFENCE_TRANSITION_ENTER:
+                                trigger = "Enter";
                                 String mNotifyMessage =  "Your kid is in "+mLocationName+" now";
-                                Toast.makeText(context, mNotifyMessage, Toast.LENGTH_SHORT).show();
+                                String mParentsNotifyReached = "You Reached The"+mLocationName;
+                                Toast.makeText(context, mParentsNotifyReached, Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onReceive: Enter");
-                                addNotification(context, mNotifyMessage);
+
+                                addNotification(context, mParentsNotifyReached, trigger, userToken);
                                 sendNotificationsOverFirebase(context, userToken, mNotifyMessage, "Click to view location!");
                                 notificationHelper.sendHighPriorityNotification(mNotifyMessage, "View Location", MapsActivity.class);
                                 break;
                             case Geofence.GEOFENCE_TRANSITION_DWELL:
+                                trigger = "Dwell";
                                 String mNotifyMessageDwell =  "Your kid is roaming in "+mLocationName+" now";
                                 Log.d(TAG, "onReceive:  Dwell");
+
                                 sendNotificationsOverFirebase(context, userToken, mNotifyMessageDwell, "Click to view location!");
+
                                 Toast.makeText(context,  mNotifyMessageDwell, Toast.LENGTH_SHORT).show();
                                 notificationHelper.sendHighPriorityNotification(mNotifyMessageDwell, "View Location", MapsActivity.class);
                                 break;
                             case Geofence.GEOFENCE_TRANSITION_EXIT:
+                                trigger = "Exit";
                                 String mNotifyMessageDwellLeft =  "Your kid has left "+mLocationName+" now";
+                                String mNotifyParentsLeft = "You Left The "+ mLocationName;
                                 Log.d(TAG,  "onReceive: Exit");
-                                addNotification(context, mNotifyMessageDwellLeft);
+                                addNotification(context, mNotifyParentsLeft, trigger, userToken);
+
                                 sendNotificationsOverFirebase(context, userToken, mNotifyMessageDwellLeft, "Click to view location!");
                                 Toast.makeText(context, mNotifyMessageDwellLeft, Toast.LENGTH_SHORT).show();
+
                                 notificationHelper.sendHighPriorityNotification(mNotifyMessageDwellLeft, "View Location", MapsActivity.class);
                                 break;
                         }
@@ -184,26 +197,31 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void addNotification(Context mContext, String title) {
+    private void addNotification(Context mContext, String title, String trigger, String userToken) {
+
+        String message = "Inform your parents about this";
+
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(mContext)
                         .setSmallIcon(R.drawable.ic_child_care_black_24dp)
                         .setContentTitle(title)
-                        .setContentText("View Location");
+                        .setContentText("message");
 
-        Intent notificationIntent = new Intent(mContext, MainActivity.class);
+        Intent notificationIntent = new Intent(mContext, InformYourParents.class);
+        notificationIntent.putExtra("whatsUpOnYourMind", trigger);
+        notificationIntent.putExtra("userToken", userToken);
+
         PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
 
-        // Add as notification
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
 
 
     public void sendNotificationsOverFirebase(Context mContext, String usertoken, String title, String message) {
-        Data data = new Data(title, message);
+        Data data = new Data(title, message, title);
         NotificationSender sender = new NotificationSender(data, usertoken);
         apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>() {
             @Override
