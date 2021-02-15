@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class InformYourParents extends AppCompatActivity {
         Toast.makeText(this, ""+userToken, Toast.LENGTH_SHORT).show();
         String mTrigger;
 
-        String mName = mLocation.getText().toString();
+
 
         if(WhatsUp.equals("Enter")){
 
@@ -66,10 +67,13 @@ public class InformYourParents extends AppCompatActivity {
         mInform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              
+                String mName = mLocation.getText().toString();
+                mInform.setBackgroundColor(getResources().getColor(R.color.noColor));
+                mInform.setTextColor(getResources().getColor(R.color.colorPrimary));
                 sendNotificationsOverFirebase(InformYourParents.this, userToken, mTrigger, "Tap to send a caring response!", mName);
-                Intent intent = new Intent(InformYourParents.this, ChildUsersFragment.class);
-                startActivity(intent);
+//                Intent intent = new Intent(InformYourParents.this, MainActivity.class);
+//                startActivity(intent);
+                finish();
             }
         });
 

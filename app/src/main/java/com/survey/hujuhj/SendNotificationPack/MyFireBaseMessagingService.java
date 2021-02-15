@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -16,7 +17,6 @@ import com.survey.hujuhj.MessageActivity;
 import com.survey.hujuhj.R;
 import com.survey.hujuhj.SignalActivity;
 import com.survey.hujuhj.SosAlarmService;
-
 
 public class MyFireBaseMessagingService extends FirebaseMessagingService {
 
@@ -55,7 +55,7 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
 
 
             }else if("Exit".equals(title)){
-                title = "Your Exited "+ location;
+                title = "Your kid is heading to "+ location;
 
                 intent = new Intent(MyFireBaseMessagingService.this, MainActivity.class);
 

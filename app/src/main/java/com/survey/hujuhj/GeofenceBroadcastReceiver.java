@@ -86,6 +86,96 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     userToken=dataSnapshot.getValue(String.class);
+
+                    DBaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot mSnapshot: snapshot.getChildren()){
+                    GeoFences mGeofence = mSnapshot.getValue(GeoFences.class);
+
+                    if(geofence.getRequestId().equals(mGeofence.getID())) {
+
+                        String mLocationName, mStart, mEnd, mMonday, mTuesday, mWednesday, mThursday, mFriday,
+                                mSaturday, mSunday;
+
+                        mLocationName = mGeofence.getLocationName();
+//                        mStart = mGeofence.getStartTime();
+//                        mEnd = mGeofence.getEndTime();
+//
+//                        mMonday = mGeofence.getMonday();
+//                        mTuesday = mGeofence.getTuesday();
+//                        mWednesday = mGeofence.getWednesday();
+//                        mThursday = mGeofence.getThursday();
+//                        mFriday = mGeofence.getFriday();
+//                        mSaturday = mGeofence.getSaturday();
+//                        mSunday = mGeofence.getSunday();
+//
+//
+//                        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//
+//                        Log.d(TAG, "onDataChange: Date "+ currentDate);
+//
+//                        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+//
+//                        Log.d(TAG, "onDataChange: time"+ currentTime );
+//
+//                        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+//                        Date d = new Date();
+//                        String dayOfTheWeek = sdf.format(d);
+//
+//                        Log.d(TAG, "onDataChange: "+ dayOfTheWeek);
+
+                        String trigger;
+
+                        switch (transitionType) {
+                            case Geofence.GEOFENCE_TRANSITION_ENTER:
+                                trigger = "Enter";
+                                String mNotifyMessage =  "Your kid is at "+mLocationName+" now";
+                                String mParentsNotifyReached = "You Reached "+mLocationName;
+                                Toast.makeText(context, mParentsNotifyReached, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "onReceive: Enter");
+
+                                addNotification(context, mParentsNotifyReached, trigger, userToken);
+                                sendNotificationsOverFirebase(context, userToken, mNotifyMessage, "Click to view location!");
+                                notificationHelper.sendHighPriorityNotification(mNotifyMessage, "View Location", MapsActivity.class);
+                                break;
+                            case Geofence.GEOFENCE_TRANSITION_DWELL:
+                                trigger = "Dwell";
+                                String mNotifyMessageDwell =  "Your kid is roaming in "+mLocationName+" now";
+                                Log.d(TAG, "onReceive:  Dwell");
+
+                                sendNotificationsOverFirebase(context, userToken, mNotifyMessageDwell, "Click to view location!");
+
+                                Toast.makeText(context,  mNotifyMessageDwell, Toast.LENGTH_SHORT).show();
+                                notificationHelper.sendHighPriorityNotification(mNotifyMessageDwell, "View Location", MapsActivity.class);
+                                break;
+                            case Geofence.GEOFENCE_TRANSITION_EXIT:
+                                trigger = "Exit";
+                                String mNotifyMessageDwellLeft =  "Your kid has left "+mLocationName+" now";
+                                String mNotifyParentsLeft = "You Left "+ mLocationName;
+                                Log.d(TAG,  "onReceive: Exit");
+                                addNotification(context, mNotifyParentsLeft, trigger, userToken);
+
+                                sendNotificationsOverFirebase(context, userToken, mNotifyMessageDwellLeft, "Click to view location!");
+                                Toast.makeText(context, mNotifyMessageDwellLeft, Toast.LENGTH_SHORT).show();
+
+                                notificationHelper.sendHighPriorityNotification(mNotifyMessageDwellLeft, "View Location", MapsActivity.class);
+                                break;
+                        }
+                    }
+
+
+                    }
+
+                }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
                 }
 
                 @Override
@@ -98,13 +188,8 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             String UserID = mFirebaseUser.getUid();
             DBaseReference = FirebaseDatabase.getInstance().getReference("GeoFences").child(UserID);
             mDBReferenceForToken = FirebaseDatabase.getInstance().getReference().child("Tokens").child(UserID).child("token");
-        }
 
-//            while(userToken == null){
-//
-//            }
-
-        DBaseReference.addValueEventListener(new ValueEventListener() {
+            DBaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot mSnapshot: snapshot.getChildren()){
@@ -192,7 +277,99 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             }
         });
 
+        }
 
+//            while(userToken == null){
+//
+//            }
+
+//        DBaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for(DataSnapshot mSnapshot: snapshot.getChildren()){
+//                    GeoFences mGeofence = mSnapshot.getValue(GeoFences.class);
+//
+//                    if(geofence.getRequestId().equals(mGeofence.getID())) {
+//
+//                        String mLocationName, mStart, mEnd, mMonday, mTuesday, mWednesday, mThursday, mFriday,
+//                                mSaturday, mSunday;
+//
+//                        mLocationName = mGeofence.getLocationName();
+//                        mStart = mGeofence.getStartTime();
+//                        mEnd = mGeofence.getEndTime();
+//
+//                        mMonday = mGeofence.getMonday();
+//                        mTuesday = mGeofence.getTuesday();
+//                        mWednesday = mGeofence.getWednesday();
+//                        mThursday = mGeofence.getThursday();
+//                        mFriday = mGeofence.getFriday();
+//                        mSaturday = mGeofence.getSaturday();
+//                        mSunday = mGeofence.getSunday();
+//
+//
+//                        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//
+//                        Log.d(TAG, "onDataChange: Date "+ currentDate);
+//
+//                        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+//
+//                        Log.d(TAG, "onDataChange: time"+ currentTime );
+//
+//                        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+//                        Date d = new Date();
+//                        String dayOfTheWeek = sdf.format(d);
+//
+//                        Log.d(TAG, "onDataChange: "+ dayOfTheWeek);
+//
+//                        String trigger;
+//
+//                        switch (transitionType) {
+//                            case Geofence.GEOFENCE_TRANSITION_ENTER:
+//                                trigger = "Enter";
+//                                String mNotifyMessage =  "Your kid is in "+mLocationName+" now";
+//                                String mParentsNotifyReached = "You Reached The"+mLocationName;
+//                                Toast.makeText(context, mParentsNotifyReached, Toast.LENGTH_SHORT).show();
+//                                Log.d(TAG, "onReceive: Enter");
+//
+//                                addNotification(context, mParentsNotifyReached, trigger, userToken);
+//                                sendNotificationsOverFirebase(context, userToken, mNotifyMessage, "Click to view location!");
+//                                notificationHelper.sendHighPriorityNotification(mNotifyMessage, "View Location", MapsActivity.class);
+//                                break;
+//                            case Geofence.GEOFENCE_TRANSITION_DWELL:
+//                                trigger = "Dwell";
+//                                String mNotifyMessageDwell =  "Your kid is roaming in "+mLocationName+" now";
+//                                Log.d(TAG, "onReceive:  Dwell");
+//
+//                                sendNotificationsOverFirebase(context, userToken, mNotifyMessageDwell, "Click to view location!");
+//
+//                                Toast.makeText(context,  mNotifyMessageDwell, Toast.LENGTH_SHORT).show();
+//                                notificationHelper.sendHighPriorityNotification(mNotifyMessageDwell, "View Location", MapsActivity.class);
+//                                break;
+//                            case Geofence.GEOFENCE_TRANSITION_EXIT:
+//                                trigger = "Exit";
+//                                String mNotifyMessageDwellLeft =  "Your kid has left "+mLocationName+" now";
+//                                String mNotifyParentsLeft = "You Left The "+ mLocationName;
+//                                Log.d(TAG,  "onReceive: Exit");
+//                                addNotification(context, mNotifyParentsLeft, trigger, userToken);
+//
+//                                sendNotificationsOverFirebase(context, userToken, mNotifyMessageDwellLeft, "Click to view location!");
+//                                Toast.makeText(context, mNotifyMessageDwellLeft, Toast.LENGTH_SHORT).show();
+//
+//                                notificationHelper.sendHighPriorityNotification(mNotifyMessageDwellLeft, "View Location", MapsActivity.class);
+//                                break;
+//                        }
+//                    }
+//
+//
+//                    }
+//
+//                }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
 
     }

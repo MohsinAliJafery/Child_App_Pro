@@ -26,7 +26,6 @@ public class Login_or_Register extends AppCompatActivity {
     FirebaseUser mFirebaseUser;
     TextView mUseInviteCode;
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -58,7 +57,6 @@ public class Login_or_Register extends AppCompatActivity {
             }
         });
 
-
         }else{
             SharedPreferences sharedpreferences = getSharedPreferences("ChildApp", Context.MODE_PRIVATE);
             String mParent = sharedpreferences.getString("parent", null);
@@ -80,7 +78,6 @@ public class Login_or_Register extends AppCompatActivity {
         Register = findViewById(R.id.Register);
         mUseInviteCode = findViewById(R.id.use_invite_code);
 
-
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +93,6 @@ public class Login_or_Register extends AppCompatActivity {
 
             }
         });
-
 
         mUseInviteCode.setOnClickListener(new View.OnClickListener() {
             @Override

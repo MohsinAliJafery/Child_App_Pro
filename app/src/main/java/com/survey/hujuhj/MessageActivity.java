@@ -232,8 +232,6 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
 //    private void sendNotification(final String receiver, final String username, final String msg) {
@@ -317,14 +315,18 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
         super.onResume();
         status("online");
+
     }
 
     @Override
     protected void onPause() {
+
         super.onPause();
         mDatabaseReference.removeEventListener(mSeenListener);
         status("offline");
+
     }
 }

@@ -313,7 +313,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
                 String mCurrentParentId = user.getParentID();
 
                 DatabaseReference mReference = FirebaseDatabase.getInstance().getReference("ChildsLocations");
-
+//                double lat_kara = 24.878895745284176;
+//                double lng_kara = 67.01015350895328;
                 HashMap<String, Double> hashMap = new HashMap<>();
                 hashMap.put("lat", lat);
                 hashMap.put("lng", lng);
